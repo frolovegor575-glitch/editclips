@@ -1,0 +1,1226 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EDITCLIPS — 4K Clips</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#08090d;color:#f5f7fb;font-family:Arial,sans-serif}
+header{height:70px;border-bottom:1px solid #242733;display:flex;align-items:center;padding:0 5%;gap:25px;position:sticky;top:0;background:#08090dee;backdrop-filter:blur(12px);z-index:5}
+.logo{font-size:23px;font-weight:900}.logo b{color:#805cff}nav{display:flex;gap:5px;flex:1;overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+nav button{border:0;background:transparent;color:#9da3b5;padding:10px 14px;border-radius:10px;cursor:pointer}
+nav button.active,nav button:hover{background:#181a23;color:white}
+.upload{background:#805cff!important;color:white!important;font-weight:700!important;cursor:pointer!important}.upload:not(button){display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:9px 14px;border-radius:10px}
+main{width:min(1150px,90%);margin:auto}
+.hero{padding:65px 0 35px;display:grid;grid-template-columns:1.5fr .8fr;gap:35px;align-items:center}
+.tag{color:#927dff;font-size:12px;font-weight:800;letter-spacing:2px}
+h1{font-size:clamp(40px,6vw,70px);line-height:.95;margin:12px 0}
+.sub{color:#a6adbd;line-height:1.5;font-size:17px}
+.drop{display:inline-flex;flex-direction:column;gap:7px;margin-top:20px;padding:17px 20px;border:1px dashed #5c527d;background:#12131b;border-radius:15px;cursor:pointer}
+.drop small{color:#858b9b}
+.preview{height:220px;border:1px solid #282c38;border-radius:25px;background:radial-gradient(circle,#30245c,#11131a 65%);display:grid;place-items:center}
+.play{width:65px;height:65px;border-radius:50%;background:#805cff;display:grid;place-items:center;font-size:23px}
+.toolbar{display:flex;gap:10px;margin:25px 0}.toolbar input,.toolbar select{background:#11131a;color:white;border:1px solid #292d38;border-radius:11px;padding:13px}.toolbar input{flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:17px}
+.card{background:#101219;border:1px solid #232733;border-radius:15px;overflow:hidden}.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#050609}
+.info{padding:12px}.title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{color:#858b9b;font-size:12px;margin-top:6px}
+.actions{display:flex;gap:6px;margin-top:10px}.actions button{background:#181b24;color:white;border:1px solid #2b2f3b;border-radius:8px;padding:6px 8px;font-size:12px;line-height:1.15;cursor:pointer;min-height:34px}.actions button:first-child{padding-left:9px;padding-right:9px}
+.empty{text-align:center;color:#73798a;padding:55px}footer{text-align:center;color:#626879;padding:60px 0 25px;font-size:12px}
+@media(max-width:750px){header{padding:0 4%;gap:8px;height:68px}.hero{grid-template-columns:1fr}.preview{height:140px}.grid{grid-template-columns:1fr 1fr}.desktop-nav{display:none!important}.mobile-nav{display:flex!important;position:fixed;left:10px;right:10px;bottom:10px;z-index:50;background:#11131bf5;border:1px solid #2b2f3b;border-radius:16px;padding:7px;gap:5px;box-shadow:0 10px 30px #0008}.mobile-nav button{flex:1;padding:9px 5px;font-size:11px}.mobile-nav span{display:block;font-size:17px}.page-wrap{padding-bottom:90px}}
+.quick-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.quick-nav button{cursor:pointer}.panel{display:none;padding:30px 0}.panel.active{display:block}.muted{color:#858b9b}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.user-card,.channel-card,.chat-item{background:#101219;border:1px solid #232733;border-radius:14px;padding:14px;margin:10px 0}.user-card,.channel-card{display:flex;justify-content:space-between;align-items:center}.avatar{width:42px;height:42px;border-radius:50%;background:#805cff;display:grid;place-items:center}.chat-layout{display:grid;grid-template-columns:280px 1fr;gap:15px}.chat-window{background:#101219;border:1px solid #232733;border-radius:14px;min-height:360px;padding:15px;display:flex;flex-direction:column}.messages{flex:1;overflow:auto}.msg{padding:9px 12px;border-radius:12px;background:#181b24;margin:8px 0;max-width:75%}.msg.me{margin-left:auto;background:#5d45bd}.chat-compose{display:flex;gap:8px;margin-top:10px}.chat-compose input{flex:1;background:#11131a;color:white;border:1px solid #292d38;border-radius:10px;padding:12px}.channel-post{background:#101219;border:1px solid #232733;border-radius:15px;padding:15px;margin:12px 0}.channel-post .post-media{width:100%;max-height:420px;border-radius:12px;margin-top:10px;background:#050609}.channel-post .poll{margin-top:10px;padding:12px;background:#181b24;border-radius:12px}.poll-option{display:block;width:100%;text-align:left;background:#11131a;color:white;border:1px solid #303443;border-radius:9px;padding:10px;margin:7px 0;cursor:pointer}.channel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:200;padding:12px}.modal.show{display:grid}.modal-box{width:min(430px,100%);background:#101219;border:1px solid #292d38;border-radius:18px;padding:22px}.modal-box input,.modal-box textarea{width:100%;margin:7px 0;background:#11131a;color:white;border:1px solid #292d38;border-radius:11px;padding:13px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.ghost{background:transparent;color:#9da3b5;border:0;padding:10px;cursor:pointer}@media(max-width:750px){.chat-layout{grid-template-columns:1fr}}
+.mobile-nav{display:none}.mobile-nav button{background:transparent;border:0;color:#9da3b5;border-radius:10px;cursor:pointer}.mobile-nav button.active{background:#805cff;color:#fff}.page-wrap{min-height:70vh}
+
+/* Видео / профиль / меню / настройки */
+.video-page{padding:25px 0 90px}
+.video-feed{width:min(620px,100%);margin:0 auto}
+.video-card{height:min(78vh,720px);min-height:480px;background:#050609;border:1px solid #232733;border-radius:20px;overflow:hidden;position:relative;margin:16px 0;display:flex;align-items:center;justify-content:center}
+.video-card video{width:100%;height:100%;object-fit:cover;background:#000}
+.video-overlay{position:absolute;inset:auto 0 0 0;padding:70px 18px 18px;background:linear-gradient(transparent,#000d);pointer-events:none}
+.video-title{font-size:18px;font-weight:800}.video-meta{color:#c0c5d2;margin-top:6px}
+.video-actions{position:absolute;right:12px;bottom:78px;display:flex;flex-direction:column;gap:9px}
+.video-actions button{width:48px;height:48px;border-radius:50%;border:1px solid #343846;background:#11131add;color:#fff;cursor:pointer;font-size:18px}
+.top-menu-btn{margin-left:auto;width:44px;height:44px;border:1px solid #292d38;background:#11131a;color:#fff;border-radius:12px;cursor:pointer;font-size:22px}
+.side-menu{position:fixed;top:0;right:-360px;width:min(350px,88vw);height:100vh;background:#101219;border-left:1px solid #292d38;z-index:100;padding:22px;transition:right .22s;box-shadow:-20px 0 50px #0008;overflow:auto}
+.side-menu.open{right:0}
+.menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.menu-item{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:0;background:#181b24;color:#fff;border-radius:12px;margin:8px 0;text-align:left;cursor:pointer}
+.profile-box{background:#101219;border:1px solid #292d38;border-radius:18px;padding:22px;text-align:center}
+.profile-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:#805cff;margin:0 auto 12px;display:grid;place-items:center;font-size:35px;font-weight:800}
+.avatar-upload{display:inline-block;background:#805cff;color:#fff;padding:9px 13px;border-radius:10px;cursor:pointer;margin:7px 0}
+.settings-section{background:#101219;border:1px solid #292d38;border-radius:15px;padding:15px;margin:12px 0}
+.settings-section label{display:block;margin:10px 0;color:#c5c9d5}
+.settings-section select,.settings-section input[type="text"]{width:100%;background:#11131a;color:#fff;border:1px solid #292d38;border-radius:10px;padding:11px}
+.lang-note{font-size:12px;color:#858b9b;margin-top:7px}
+@media(max-width:750px){.video-card{height:72vh;min-height:500px;border-radius:14px}.side-menu{width:100vw;right:-100vw}}
+
+
+/* ===== EDITCLIPS 2.0 ===== */
+.profile-page{padding:28px 0}
+.profile-cover{background:linear-gradient(135deg,#1b1535,#101219);border:1px solid #292d38;border-radius:20px;padding:25px}
+.profile-main{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.profile-big-avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;background:#805cff;display:grid;place-items:center;font-size:32px;font-weight:900}
+.profile-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px}.profile-stats b{font-size:20px;display:block}.profile-tabs{display:flex;gap:7px;margin:18px 0;overflow:auto}.profile-tabs button{background:#181b24;color:#fff;border:0;border-radius:10px;padding:10px 14px;cursor:pointer}
+.feed-card{background:#101219;border:1px solid #232733;border-radius:15px;padding:15px;margin:12px 0}
+.feed-actions{display:flex;gap:8px;margin-top:12px}.feed-actions button{background:#181b24;color:#fff;border:1px solid #2b2f3b;border-radius:9px;padding:8px 11px;cursor:pointer}
+.comment-box{display:flex;gap:8px;margin-top:10px}.comment-box input{flex:1;background:#11131a;color:white;border:1px solid #292d38;border-radius:10px;padding:10px}
+.notification{background:#101219;border:1px solid #292d38;border-radius:12px;padding:12px;margin:8px 0}
+.ai-chat{min-height:520px}.ai-badge{display:inline-block;background:#805cff;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:800}
+.search-results{margin-top:10px}.search-group{margin:20px 0}.search-result{background:#101219;border:1px solid #232733;border-radius:12px;padding:12px;margin:8px 0}
+.admin-panel{background:#11131a;border:1px solid #292d38;border-radius:14px;padding:14px;margin-top:12px}
+.report-btn{font-size:12px!important;color:#aaa!important}
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#181b24;color:white;border:1px solid #343846;border-radius:12px;padding:12px 16px;z-index:150;display:none}
+
+
+/* ===== UPLOAD EDITOR + MEDIA FIX ===== */
+.upload-editor-box{width:min(560px,100%);max-height:calc(100vh - 24px);overflow:auto;padding-bottom:10px}.upload-editor-box .modal-actions{position:sticky;bottom:0;margin:14px -2px -2px;padding:10px 2px 2px;background:linear-gradient(180deg,transparent,#101219 22%);z-index:3}.upload-editor-box .modal-actions button{min-height:42px}.upload-editor-box .modal-actions .upload{padding:10px 16px;border-radius:10px}
+.upload-editor-preview{width:100%;aspect-ratio:16/9;background:#050609;border:1px solid #292d38;border-radius:14px;display:grid;place-items:center;overflow:hidden;margin:8px 0 14px}
+.upload-editor-preview video{width:100%;height:100%;object-fit:contain;background:#000}
+.upload-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.upload-editor-box label{display:block;color:#c8ccda;font-size:13px;margin:8px 0}
+.upload-editor-box input,.upload-editor-box textarea,.upload-editor-box select{width:100%;background:#11131a;color:#fff;border:1px solid #292d38;border-radius:10px;padding:12px;font:inherit}
+.upload-editor-box textarea{min-height:82px;resize:vertical}
+.upload-editor-hint{font-size:12px;color:#858b9b;margin-top:5px}
+.upload-progress{height:7px;background:#1a1d27;border-radius:99px;overflow:hidden;margin-top:10px;display:none}
+.upload-progress i{display:block;height:100%;width:0;background:#805cff;transition:width .15s}
+@media(max-width:600px){.upload-editor-grid{grid-template-columns:1fr}.upload-editor-box{padding:14px;max-height:calc(100vh - 16px)}.upload-editor-preview{margin-bottom:10px}.upload-editor-box .modal-actions{margin-top:10px;padding-top:9px}.upload-editor-box .modal-actions button{min-height:44px}.actions{gap:5px}.actions button{padding:6px 7px;font-size:11px;min-height:32px}}
+
+/* AI монтаж-помощник */
+.ai-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.ai-tools label{display:flex;flex-direction:column;gap:6px;color:#aeb4c4;font-size:12px}.ai-tools input,.ai-tools select{width:100%;background:#11131a;color:#fff;border:1px solid #292d38;border-radius:10px;padding:11px}.ai-presets{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.ai-presets button{background:#181b24;color:#fff;border:1px solid #303443;border-radius:10px;padding:9px 11px;cursor:pointer}.ai-result{margin-top:12px;background:#0d0f15;border:1px solid #302d48;border-radius:14px;padding:13px;line-height:1.5}.ai-result b{color:#a88cff}.ai-result code{background:#171923;padding:2px 5px;border-radius:5px;color:#ddd}.ai-note{font-size:11px;color:#72798a;margin-top:8px}
+@media(max-width:750px){.ai-tools{grid-template-columns:1fr}.ai-chat{min-height:0}}
+</style>
+
+<style id="editclips30css">
+.ec30{margin-top:18px}.ec30-tabs{display:flex;gap:8px;flex-wrap:wrap}.ec30-tabs button{cursor:pointer;border:1px solid #303442;background:#151821;color:#fff;padding:9px 12px;border-radius:10px}.ec30-tabs button.active{background:#805cff}.ec30-card{border:1px solid #292d38;background:#11131a;border-radius:14px;padding:14px;margin:12px 0}.ec30-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.ec30-actions button{cursor:pointer;border:1px solid #303442;background:#191c25;color:#fff;padding:8px 10px;border-radius:9px}.ec30-actions button.on{background:#805cff}.ec30-search{width:100%;box-sizing:border-box;background:#11131a;border:1px solid #303442;color:#fff;border-radius:10px;padding:11px}.ec30-comments{margin-top:8px}.ec30-comments p{margin:5px 0;padding:6px 0;border-bottom:1px solid #242733}
+</style>
+<style id="editclips-fast-css">
+.ec-fast-note{font-size:12px;opacity:.65;margin:6px 0}
+video{content-visibility:auto}
+</style>
+<style id="mobile-clean-ui-fix">
+/* ===== CLEAN MOBILE UI ===== */
+@media (max-width: 750px){
+  body{overflow-x:hidden}
+  header{height:60px;padding:0 8px;gap:6px;position:sticky;top:0;z-index:80}
+  .logo{font-size:18px;white-space:nowrap;flex:1;min-width:0}
+  #loginBtn{flex:0 0 38px;width:38px;height:38px;padding:0;font-size:0;display:grid;place-items:center}
+  #loginBtn::after{content:'🔐';font-size:18px}
+  .top-menu-btn{flex:0 0 40px;width:40px;height:40px;font-size:20px}
+  header>.upload{flex:0 0 auto;min-width:104px;height:40px;min-height:40px;padding:7px 10px!important;border-radius:9px!important;font-size:13px;line-height:1.05;white-space:nowrap}
+  main{width:calc(100% - 20px);max-width:none}
+  .hero{padding:28px 0 22px;gap:18px}
+  .toolbar{gap:8px;margin:18px 0;align-items:stretch}
+  .toolbar input,.toolbar select{min-width:0;padding:11px;font-size:14px}
+  .grid{grid-template-columns:1fr!important;gap:12px}
+  .card{width:100%;border-radius:14px}
+  .thumb{aspect-ratio:16/9}
+  .info{padding:10px}
+  .title{font-size:16px}
+  .meta{font-size:11px}
+  .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:9px}
+  .actions button{width:100%;min-width:0;min-height:34px;height:34px;padding:5px 3px!important;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mobile-nav{left:6px;right:6px;bottom:6px;width:auto;max-width:none;z-index:120;padding:5px;gap:3px;border-radius:15px;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:none}
+  .mobile-nav::-webkit-scrollbar{display:none}
+  .mobile-nav button{flex:0 0 64px;min-width:64px;padding:7px 3px;font-size:10px;white-space:nowrap}
+  .mobile-nav span{font-size:16px;line-height:18px}
+  .page-wrap{padding-bottom:105px!important}
+  .panel{padding-bottom:18px}
+  .video-page{padding-bottom:110px}
+  .video-card{margin:12px 0 18px;min-height:420px;height:calc(100svh - 150px);max-height:680px}
+  .video-actions{right:8px;bottom:70px}
+  .video-actions button{width:42px;height:42px}
+  footer{padding-bottom:115px}
+}
+@media (max-width: 420px){
+  header{gap:5px}
+  .logo{font-size:17px}
+  header>.upload{min-width:96px;font-size:12px;padding-left:8px!important;padding-right:8px!important}
+  .mobile-nav button{flex-basis:60px;min-width:60px}
+}
+/* Upload editor: never let the bottom buttons hide behind the site navigation */
+.upload-editor-box{max-height:calc(100dvh - 24px);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.upload-editor-box>.upload-editor-preview{flex:0 0 auto}
+.upload-editor-box>.upload-editor-grid,
+.upload-editor-box>label,
+.upload-editor-box>.upload-editor-hint,
+.upload-editor-box>.upload-progress{flex:0 0 auto}
+.upload-editor-box .modal-actions{flex:0 0 auto;position:sticky;bottom:0;margin-top:10px;padding:10px 0 0;background:linear-gradient(180deg,transparent 0,#101219 22%);border-top:1px solid #292d38;z-index:5}
+@media(max-width:600px){
+  .modal{padding:8px}
+  .upload-editor-box{width:100%;max-height:calc(100dvh - 16px);padding:14px!important;border-radius:15px}
+  .upload-editor-preview{max-height:27vh;overflow:hidden}
+  .upload-editor-preview video{width:100%;max-height:27vh;object-fit:contain;background:#050609}
+  .upload-editor-box .modal-actions{display:grid;grid-template-columns:1fr 1.2fr;gap:7px}
+  .upload-editor-box .modal-actions button{min-height:42px}
+}
+
+<style id="mobile-layer-fix">
+/* ===== MOBILE LAYER FIX: меню никогда не перекрывается контентом ===== */
+.side-menu{z-index:1000!important}
+.modal{z-index:2000!important}
+@media(max-width:750px){
+  .side-menu{left:auto;top:0;right:-100vw;width:100vw;max-width:100vw;height:100dvh;min-height:100vh;padding:18px 16px 110px;overflow-y:auto;overflow-x:hidden;background:#101219;box-shadow:-20px 0 60px #000b}
+  .side-menu.open{right:0}
+  .side-menu.open ~ .mobile-nav{display:none!important}
+  body.menu-open{overflow:hidden}
+  .menu-head{position:sticky;top:0;z-index:2;background:#101219;padding:4px 0 14px;margin-bottom:10px}
+  .menu-item{min-height:56px;margin:8px 0}
+}
+</style>
+</style>
+</head>
+<body>
+<header>
+<div class="logo">EDIT<b>CLIPS</b></div>
+<nav id="mainNav" class="desktop-nav">
+<button class="active" data-page="home">🏠 Клипы</button><button data-page="video">▶️ Видео</button><button data-page="users">👤 Пользователи</button><button data-page="chats">💬 Чаты</button><button data-page="channels">📢 Каналы</button><button data-page="support">🤖 Поддержка</button><button data-page="profile">👤 Профиль</button>
+</nav>
+<button class="ghost" id="loginBtn" type="button">🔐 Войти</button><button class="top-menu-btn" id="menuBtn" aria-label="Меню">☰</button>
+<label class="upload">＋ Загрузить клип<input id="files" type="file" accept="video/*" multiple hidden></label>
+</header>
+<nav class="mobile-nav" id="mobileNav">
+<button data-page="home"><span>🏠</span>Клипы</button><button data-page="video"><span>▶️</span>Видео</button>
+<button data-page="users"><span>👤</span>Люди</button>
+<button data-page="chats"><span>💬</span>Чаты</button>
+<button data-page="channels"><span>📢</span>Каналы</button>
+<button data-page="support"><span>🤖</span>Поддержка</button><button data-page="profile"><span>👤</span>Профиль</button>
+</nav>
+
+<main class="page-wrap">
+<section class="hero">
+<div><div class="tag">CLIPS FOR EDITORS</div><h1>4K-клипы<br>для эдитов</h1><p class="sub">Находи крутые кадры, смотри их прямо на сайте и добавляй собственные клипы.</p>
+<label class="drop"><b>Загрузить свои клипы</b><small>MP4 • MOV • WEBM</small><input id="heroFiles" type="file" accept="video/*" multiple hidden></label>
+</div>
+<div class="preview"><div class="play">▶</div></div>
+</section>
+
+<section class="toolbar"><input id="search" placeholder="🔎 Поиск клипов..."><select id="sort"><option value="new">Новые</option><option value="name">По названию</option></select></section>
+<section id="grid" class="grid"></section><div id="empty" class="empty">Здесь пока нет клипов.<br>Загрузи свой первый клип 👆</div>
+
+
+<section id="profile" class="panel page profile-page">
+  <div id="profilePage"></div>
+</section>
+<section id="video" class="panel page video-page">
+  <div class="row"><div><h2>Видео</h2><p class="muted">Вертикальная лента роликов в стиле TikTok.</p></div></div>
+  <div class="video-feed" id="videoFeed"></div>
+</section>
+<section id="users" class="panel page"><h2>Пользователи</h2><p class="muted">Ищи людей по уникальному юзернейму.</p><div class="toolbar"><input id="userSearch" placeholder="🔎 Например: @editor"><button class="upload" id="findUser">Найти</button></div><div id="userResults"></div></section>
+<section id="chats" class="panel page"><h2>Чаты</h2><div class="chat-layout"><div id="chatList"><div class="chat-item" onclick="openSupportChat()" style="cursor:pointer;border-color:#805cff"><b>🤖 Поддержка EDITCLIPS</b><div class="muted">Бот поддержки</div></div></div><div class="chat-window"><b id="chatTitle">Выбери чат</b><hr><div class="messages" id="messages"></div><div class="chat-compose"><input id="chatInput" placeholder="Сообщение..."><button class="upload" id="sendMsg">Отправить</button></div></div></div></section>
+<section id="channels" class="panel page">
+<div class="row"><div><h2>Каналы</h2><p class="muted">Подписывайся на каналы и следи за публикациями.</p></div><button class="upload" id="createChannel">＋ Создать канал</button></div>
+<div id="channelList"></div>
+<div id="channelFeed"></div>
+</section>
+<section id="support" class="panel page"><h2>🤖 Поддержка <span class="ai-badge">AI</span></h2>
+<p class="muted">Умный помощник для EDITCLIPS и монтажа. Он подбирает настройки под CapCut, Alight Motion и After Effects, а также делает пресет Shake под название песни.</p>
+<div class="ai-tools">
+<label>Программа<select id="aiApp"><option>CapCut</option><option>Alight Motion</option><option>After Effects</option></select></label>
+<label>Название песни<input id="aiSong" placeholder="Например: Faster n Harder (Slowed & Reverbed)"></label>
+<label>Стиль шейка<select id="aiShake"><option value="smooth">Smooth — плавный</option><option value="hard">Hard — мощный</option><option value="velocity">Velocity — быстрый</option><option value="glitch">Glitch — дерганый</option></select></label>
+<label>Сила<select id="aiPower"><option value="light">Лёгкая</option><option value="medium" selected>Средняя</option><option value="hard">Сильная</option><option value="insane">Имбовая</option></select></label>
+</div>
+<div class="ai-presets"><button type="button" onclick="aiMakeShake()">🔥 Настроить Shake</button><button type="button" onclick="aiMakeQuality()">✨ Настроить качество</button><button type="button" onclick="aiMakeBeat()">🎵 Под бит</button><button type="button" onclick="aiAskPreset('цветокор')">🎨 Цветокор</button></div>
+<div id="aiPresetResult" class="ai-result"><b>Готов помочь.</b><br>Напиши название песни и нажми «Настроить Shake» — получишь конкретные параметры для выбранного редактора.</div>
+<div class="chat-window ai-chat"><div class="messages" id="aiMessages"><div class="msg">Привет! 🤖 Я могу помочь с монтажом, эффектами, Shake, Velocity, цветокором и качеством. Можешь написать: «Сделай имбовый Shake под [название песни]».</div></div>
+<div class="chat-compose"><input id="aiInput" placeholder="Например: сделай шейк под эту песню..."><button class="upload" id="aiSend">Отправить</button></div></div>
+<div class="ai-note">Сейчас помощник работает прямо внутри HTML без внешнего API. Для настоящего облачного ИИ позже можно подключить безопасный backend.</div></section>
+</main>
+<footer>EDITCLIPS • 4K clips for editors</footer>
+
+
+
+<aside class="side-menu" id="sideMenu">
+  <div class="menu-head"><h2 style="margin:0">Меню</h2><button class="ghost" id="closeMenu">✕</button></div>
+  <button class="menu-item" id="menuProfile">👤 Профиль</button>
+  <button class="menu-item" id="menuSettings">⚙️ Настройки</button><button class="menu-item" id="menuNotifications">🔔 Уведомления</button>
+  <button class="menu-item" id="menuLanguage">🌐 Язык</button>
+</aside>
+<div class="modal" id="notificationsModal"><div class="modal-box">
+<h2>🔔 Уведомления</h2><div id="notificationList"></div>
+<div class="modal-actions"><button class="ghost" data-close>Закрыть</button><button class="ghost" id="clearNotifications">Очистить</button></div>
+</div></div><div class="modal" id="profileModal"><div class="modal-box">
+  <h2>Профиль</h2>
+  <div class="profile-box">
+    <img id="profileAvatar" class="profile-avatar" alt="Аватар" style="display:none">
+    <div id="profileAvatarFallback" class="profile-avatar">👤</div>
+    <label class="avatar-upload">📷 Сменить аватар<input id="avatarFile" type="file" accept="image/*" hidden></label>
+    <h3 id="profileName">Гость</h3><div class="muted" id="profileUsername">@guest</div>
+  </div>
+  <div class="modal-actions"><button class="ghost" data-close>Закрыть</button></div>
+</div></div>
+<div class="modal" id="settingsModal"><div class="modal-box">
+  <h2>Настройки</h2>
+  <div class="settings-section"><b>🎨 Стиль</b>
+    <label>Тема<select id="themeSelect"><option value="dark">Тёмная</option><option value="light">Светлая</option><option value="purple">Фиолетовая</option></select></label>
+    <label>Размер текста<select id="fontSelect"><option value="normal">Обычный</option><option value="large">Крупный</option></select></label>
+  </div>
+  <div class="settings-section"><b>🌐 Язык</b>
+    <select id="languageSelect"></select>
+    <div class="lang-note">Можно выбрать язык интерфейса. Список содержит широкий набор языков мира.</div>
+  </div>
+  <div class="modal-actions"><button class="ghost" data-close>Закрыть</button><button class="upload" id="saveSettings">Сохранить</button></div>
+</div></div>
+
+<div class="modal" id="postModal"><div class="modal-box">
+<h2 id="postModalTitle">Новая публикация</h2>
+<select id="postType" style="width:100%;background:#11131a;color:white;border:1px solid #292d38;border-radius:11px;padding:13px;margin:7px 0">
+<option value="text">Пост</option><option value="clip">Клип / Edit</option><option value="poll">Опрос</option>
+</select>
+<textarea id="postText" placeholder="Что хочешь опубликовать?"></textarea>
+<input id="postMedia" type="file" accept="video/*">
+<div id="pollFields" style="display:none"><input id="pollQuestion" placeholder="Вопрос"><input id="pollOptions" placeholder="Варианты через запятую"></div>
+<div class="modal-actions"><button class="ghost" data-close>Отмена</button><button class="upload" id="doPost">Опубликовать</button></div>
+</div></div><div class="modal" id="loginModal"><div class="modal-box"><h2>Вход / регистрация</h2><input id="loginName" placeholder="Имя"><input id="loginUsername" placeholder="@юзернейм"><input id="loginEmail" placeholder="Email"><div class="modal-actions"><button class="ghost" data-close>Отмена</button><button class="upload" id="doLogin">Войти</button></div></div></div><div class="modal" id="channelModal"><div class="modal-box"><h2>Новый канал</h2><input id="channelName" placeholder="Название"><input id="channelUsername" placeholder="@username"><textarea id="channelDesc" placeholder="Описание"></textarea><div class="modal-actions"><button class="ghost" data-close>Отмена</button><button class="upload" id="doChannel">Создать</button></div></div></div>
+<div class="modal" id="uploadEditorModal">
+  <div class="modal-box upload-editor-box">
+    <h2 id="uploadEditorTitle">🎬 Оформление клипа</h2>
+    <div class="upload-editor-preview"><video id="uploadEditorPreview" controls playsinline preload="metadata"></video></div>
+    <div class="upload-editor-grid">
+      <label>Название
+        <input id="uploadName" maxlength="120" placeholder="Например: Homelander Edit">
+      </label>
+      <label>Тип
+        <select id="uploadType">
+          <option value="clip">Клип / Edit</option>
+          <option value="video">Видео</option>
+        </select>
+      </label>
+      <label>Категория
+        <select id="uploadCategory">
+          <option value="4k">4K</option>
+          <option value="hd">HD</option>
+          <option value="anime">Аниме</option>
+          <option value="movie">Фильмы</option>
+          <option value="series">Сериалы</option>
+          <option value="other">Другое</option>
+        </select>
+      </label>
+      <label>Теги
+        <input id="uploadTags" maxlength="200" placeholder="#edit #4k #homelander">
+      </label>
+    </div>
+    <label>Описание
+      <textarea id="uploadDescription" maxlength="1000" placeholder="Напиши описание клипа..."></textarea>
+    </label>
+    <label>Автор
+      <input id="uploadAuthor" maxlength="80" placeholder="@username">
+    </label>
+    <label style="display:flex;align-items:center;gap:9px;margin-top:12px">
+      <input id="uploadPublic" type="checkbox" checked style="width:auto">
+      Показывать в ленте
+    </label>
+    <div class="upload-editor-hint" id="uploadFileInfo"></div>
+    <div class="upload-progress" id="uploadProgress"><i></i></div>
+    <div class="modal-actions">
+      <button class="ghost" id="uploadCancel">Отмена</button>
+      <button class="upload" id="uploadSave">💾 Загрузить</button>
+    </div>
+  </div>
+</div>
+<script>
+let clips=[],filter='all',currentUser=JSON.parse(localStorage.getItem('editclipsUser')||'null');window.currentUser=currentUser;let users=[{name:'Alex Editor',username:'@alex'},{name:'Anime Master',username:'@anime_master'},{name:'Movie Cuts',username:'@moviecuts'}];let chats=[{name:'Alex Editor',username:'@alex',messages:['Привет!','Смотри новый клип 🔥']}];let channels=JSON.parse(localStorage.getItem('editclipsChannels')||'[]');
+let notifications=JSON.parse(localStorage.getItem('editclipsNotifications')||'[]');
+let savedClips=JSON.parse(localStorage.getItem('editclipsClips')||'[]');
+let savedVideos=JSON.parse(localStorage.getItem('editclipsVideos')||'[]');
+let following=JSON.parse(localStorage.getItem('editclipsFollowing')||'[]');
+let blocked=JSON.parse(localStorage.getItem('editclipsBlocked')||'[]');
+channels.forEach(c=>{c.posts=c.posts||[];c.subscribers=c.subscribers||0});
+function persistAll(){
+  localStorage.setItem('editclipsChannels',JSON.stringify(channels));
+  localStorage.setItem('editclipsClips',JSON.stringify(savedClips));
+  localStorage.setItem('editclipsVideos',JSON.stringify(savedVideos));
+  localStorage.setItem('editclipsNotifications',JSON.stringify(notifications));
+  localStorage.setItem('editclipsFollowing',JSON.stringify(following));
+  localStorage.setItem('editclipsBlocked',JSON.stringify(blocked));
+}
+function toast(t){let x=document.getElementById('toast');if(!x)return;x.textContent=t;x.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.style.display='none',2200)}
+function notify(text){notifications.unshift({id:Date.now(),text,date:Date.now(),read:false});notifications=notifications.slice(0,100);persistAll();renderNotifications()}
+channels.forEach(c=>{c.posts=c.posts||[];c.subscribers=c.subscribers||0});
+const grid=document.getElementById('grid'),empty=document.getElementById('empty'),search=document.getElementById('search'),sort=document.getElementById('sort');
+async function add(files){
+  const list=[...files].filter(f=>f && f.type.startsWith('video/'));
+  if(!list.length){alert('Выбери видеофайл (MP4, MOV или WEBM).');return;}
+  await openUploadEditor(list,'clip');
+}
+async function hasEnoughStorage(fileSize){
+  try{
+    if(!navigator.storage?.estimate)return true;
+    const e=await navigator.storage.estimate();
+    const usage=e.usage||0, quota=e.quota||0;
+    if(!quota)return true;
+    return usage+fileSize < quota*0.90;
+  }catch(e){return true}
+}
+async function saveMediaToDB(item,file,type){
+  try{
+    if(!file||!file.size) throw new Error('Пустой файл');
+    if(!(await hasEnoughStorage(file.size))){
+      alert('Недостаточно памяти браузера для этого видео. Удали старые клипы или освободи память телефона.');
+      return false;
+    }
+    const db=await openMediaDB();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction('media','readwrite');
+      tx.objectStore('media').put({
+        ...item,
+        id:item.id,name:item.name,size:file.size,date:item.date||Date.now(),
+        category:item.category||'4k',type:type||item.type||'clip',
+        blob:file,author:item.author||'@guest',likes:item.likes||0,
+        description:item.description||'',tags:Array.isArray(item.tags)?item.tags:[],
+        public:item.public!==false
+      });
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error||new Error('Ошибка записи'));
+      tx.onabort=()=>reject(tx.error||new Error('Хранилище отказало в записи'));
+    });
+    return true;
+  }catch(e){
+    console.error('Media DB error',e);
+    alert('Видео не загрузилось: '+(e?.message||'браузер не смог сохранить файл')+'.');
+    return false;
+  }
+}
+function openMediaDB(){
+  return new Promise((resolve,reject)=>{
+    const r=indexedDB.open('EDITCLIPS_MEDIA',1);
+    r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('media'))r.result.createObjectStore('media',{keyPath:'id'})};
+    r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);
+  });
+}
+async function loadMedia(){
+  try{
+    const db=await openMediaDB();
+    return await new Promise((resolve,reject)=>{
+      const out=[];const req=db.transaction('media','readonly').objectStore('media').openCursor();
+      req.onsuccess=e=>{
+        const cur=e.target.result;
+        if(cur){
+          const x=cur.value;
+          // В память загружаем только метаданные. Сам Blob берём только при просмотре.
+          out.push({id:x.id,name:x.name,size:x.size||0,date:x.date,category:x.category||'4k',type:x.type,author:x.author||'@guest',likes:x.likes||0,description:x.description||'',tags:Array.isArray(x.tags)?x.tags:[],public:x.public!==false,url:null,_lazy:true});
+          cur.continue();
+        }else{
+          clips=out.filter(x=>x.type==='clip');
+          videos=out.filter(x=>x.type==='video');
+          resolve(out);
+        }
+      };
+      req.onerror=()=>reject(req.error);
+    });
+  }catch(e){console.warn('Media load error',e);clips=[];videos=[];return []}
+}
+async function hydrateMedia(id){
+  const db=await openMediaDB();
+  return await new Promise((resolve,reject)=>{
+    const r=db.transaction('media','readonly').objectStore('media').get(id);
+    r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error);
+  });
+}
+async function getMediaUrl(id){
+  const rec=await hydrateMedia(id);if(!rec?.blob)return null;
+  return URL.createObjectURL(rec.blob);
+}
+async function deleteMediaFromDB(id){
+  try{
+    const db=await openMediaDB();
+    await new Promise((resolve,reject)=>{const tx=db.transaction('media','readwrite');tx.objectStore('media').delete(id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
+  }catch(e){console.warn('Media delete error',e)}
+}
+function render(){
+  let q=(search?.value||'').toLowerCase();
+  let a=clips.filter(x=>(filter==='all'||x.category===filter)&&x.name.toLowerCase().includes(q));
+  if(sort?.value==='name')a.sort((x,y)=>x.name.localeCompare(y.name));
+  grid.innerHTML='';empty.style.display=a.length?'none':'block';
+  a.forEach((x)=>{
+    let c=document.createElement('article');c.className='card';
+    c.innerHTML='<video class="thumb" controls playsinline preload="metadata" data-lazy-id="'+safe(String(x.id))+'"></video>'+
+      '<div class="info"><div class="title">'+safe(x.name)+'</div>'+
+      '<div class="meta">'+safe((x.category||'4k').toUpperCase())+' • '+Math.round(x.size/1024/1024*10)/10+' MB'+(x.tags?.length?' • '+safe(x.tags.slice(0,3).join(' ')):'')+'</div>'+
+      (x.description?'<div class="muted" style="margin-top:6px;font-size:12px">'+safe(x.description)+'</div>':'')+
+      '<div class="actions"><button>▶ Смотреть</button><button>⬇ Скачать</button><button>🗑 Удалить</button></div></div>';
+    const vid=c.querySelector('video');
+    hydrateVideoElement(vid,x.id);
+    const btns=c.querySelectorAll('button');
+    btns[0].onclick=async()=>{const url=await getMediaUrl(x.id);if(!url)return alert('Файл не найден.');vid.src=url;vid.play().catch(()=>{});};
+    btns[1].onclick=async()=>{const url=await getMediaUrl(x.id);if(!url)return alert('Файл не найден.');let a=document.createElement('a');a.href=url;a.download=x.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)};
+    btns[2].onclick=async()=>{if(!confirm('Удалить этот клип?'))return;await deleteMediaFromDB(x.id);clips=clips.filter(v=>v.id!==x.id);render();};
+    grid.appendChild(c);
+  });
+}
+async function hydrateVideoElement(el,id){
+  if(!el||!id)return;
+  try{
+    const rec=await hydrateMedia(id);
+    if(!rec?.blob)return;
+    const old=el.dataset.objectUrl;
+    if(old)URL.revokeObjectURL(old);
+    const url=URL.createObjectURL(rec.blob);
+    el.dataset.objectUrl=url;el.src=url;el.load();
+  }catch(e){console.warn('Video hydrate error',id,e)}
+}
+async function hydrateAllVideos(){
+  document.querySelectorAll('video[data-lazy-id]').forEach(el=>hydrateVideoElement(el,el.dataset.lazyId));
+}
+function safe(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function showPage(id){
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('nav button,#mobileNav button').forEach(x=>x.classList.remove('active'));
+if(id==='home'){document.querySelectorAll('[data-page="home"]').forEach(x=>x.classList.add('active'));return;}
+const target=document.getElementById(id); if(!target)return;
+target.classList.add('active');
+document.querySelectorAll('[data-page="'+id+'"]').forEach(x=>x.classList.add('active'));
+if(id==='users'&&typeof renderUsers==='function')renderUsers();
+if(id==='chats'&&typeof renderChats==='function')renderChats();
+if(id==='channels'&&typeof renderChannels==='function')renderChannels();
+if(id==='video'&&typeof loadMedia==='function')loadMedia().then(()=>renderVideo());
+if(id==='profile'&&typeof renderProfilePage==='function')renderProfilePage();
+if(id==='support'){const x=document.getElementById('aiInput');if(x)setTimeout(()=>x.focus(),50);}
+}
+document.getElementById('loginBtn').addEventListener('click',()=>document.getElementById('loginModal').classList.add('show'));
+
+document.getElementById('files').onchange=e=>add(e.target.files);document.getElementById('heroFiles').onchange=e=>add(e.target.files);search.oninput=render;sort.onchange=render;render();
+function renderUsers(){
+  let q=document.getElementById('userSearch').value.trim().toLowerCase().replace(/^@/,'');
+  let a=users.filter(u=>(u.username+' '+u.name).toLowerCase().includes(q));
+  document.getElementById('userResults').innerHTML=a.map((u,i)=>
+    '<div class="user-card"><div style="display:flex;gap:10px;align-items:center"><div class="avatar">'+safe(u.name[0]||'?')+'</div><div><b>'+safe(u.name)+'</b><div class="muted">'+safe(u.username)+'</div></div></div><button class="ghost" onclick="openChat('+i+')">Написать</button></div>'
+  ).join('')||'<div class="empty">Пользователь не найден.</div>';
+}
+function renderChats(){
+  document.getElementById('chatList').innerHTML=chats.map((c,i)=>
+    '<div class="chat-item" onclick="openChatIndex('+i+')" style="cursor:pointer"><b>'+safe(c.name)+'</b><div class="muted">'+safe(c.username)+'</div></div>'
+  ).join('')||'<div class="empty">Чатов пока нет.</div>';
+}
+function openSupportChat(){showPage('support')}
+function openChat(i){
+  let u=users[i], j=chats.findIndex(c=>c.username===u.username);
+  if(j<0){chats.push({name:u.name,username:u.username,messages:[]});j=chats.length-1}
+  showPage('chats'); openChatIndex(j);
+}
+function openChatIndex(i){
+  let c=chats[i];
+  document.getElementById('chatTitle').textContent=c.name+' '+c.username;
+  document.getElementById('messages').innerHTML=c.messages.map(m=>'<div class="msg">'+safe(m)+'</div>').join('');
+  var __e=document.getElementById('sendMsg');if(__e)__e.onclick=()=>{
+    let v=document.getElementById('chatInput').value.trim();
+    if(v){c.messages.push(v);document.getElementById('chatInput').value='';openChatIndex(i)}
+  };
+}
+function getSubscribed(){
+  return JSON.parse(localStorage.getItem('editclipsSubscriptions')||'[]');
+}
+function setSubscribed(a){localStorage.setItem('editclipsSubscriptions',JSON.stringify(a))}
+function isAdmin(c){return currentUser && c.owner===currentUser.username}
+function renderChannels(){
+  let subs=getSubscribed();
+  document.getElementById('channelList').innerHTML=channels.map((c,i)=>{
+    let subscribed=subs.includes(c.username), admin=isAdmin(c);
+    return '<div class="channel-card"><div style="display:flex;gap:10px;align-items:center"><div class="avatar">📢</div><div><b>'+safe(c.name)+'</b><div class="muted">'+safe(c.username)+' • '+safe(c.desc||'')+'</div><div class="muted">'+(c.subscribers||0)+' подписчиков</div></div></div><div class="channel-actions">'+
+      '<button class="ghost" onclick="toggleSubscribe('+i+')">'+(subscribed?'✓ Вы подписаны':'＋ Подписаться')+'</button>'+
+      '<button class="ghost" onclick="openChannel('+i+')">Открыть</button>'+
+      (admin?'<button class="upload" onclick="openPost('+i+')">＋ Публикация</button>':'')+
+      '</div></div>'
+  }).join('')||'<div class="empty">Каналов пока нет.</div>';
+  document.getElementById('channelFeed').innerHTML='<h3 style="margin-top:28px">Лента каналов</h3>'+
+    (channels.filter((c,i)=>subs.includes(c.username)||isAdmin(c)).flatMap(c=>(c.posts||[]).map(p=>({c,p}))).sort((a,b)=>b.p.date-a.p.date).map(x=>postHTML(x.c,x.p)).join('')||
+    '<div class="empty">Подпишись на канал, чтобы видеть его публикации.</div>');
+}
+function toggleSubscribe(i){
+  let c=channels[i], subs=getSubscribed(), idx=subs.indexOf(c.username);
+  if(idx>=0){subs.splice(idx,1);c.subscribers=Math.max(0,(c.subscribers||1)-1)}
+  else{subs.push(c.username);c.subscribers=(c.subscribers||0)+1}
+  setSubscribed(subs);localStorage.setItem('editclipsChannels',JSON.stringify(channels));renderChannels();
+}
+function openChannel(i){
+  let c=channels[i], subs=getSubscribed();
+  document.getElementById('channelFeed').innerHTML='<div class="row"><div><h3>'+safe(c.name)+' '+safe(c.username)+'</h3><div class="muted">'+safe(c.desc||'')+'</div></div><button class="ghost" onclick="renderChannels()">← Назад</button></div>'+
+    ((c.posts||[]).slice().sort((a,b)=>b.date-a.date).map(p=>postHTML(c,p)).join('')||'<div class="empty">Публикаций пока нет.</div>');
+  if(isAdmin(c)){
+    document.getElementById('channelFeed').insertAdjacentHTML('afterbegin','<div class="channel-actions"><button class="upload" onclick="openPost('+channels.indexOf(c)+')">＋ Написать пост</button></div>');
+  }
+}
+function postHTML(c,p){
+  let media=p.media?'<video class="post-media" controls src="'+p.media+'"></video>':'';
+  let poll=p.type==='poll'?'<div class="poll"><b>'+safe(p.question)+'</b>'+(p.options||[]).map((o,j)=>'<button class="poll-option" onclick="votePoll('+channels.indexOf(c)+','+p.id+','+j+')">'+safe(o)+' — '+((p.votes||[])[j]||0)+'</button>').join('')+'</div>':'';
+  return '<article class="channel-post"><div class="row"><div><b>'+safe(c.name)+'</b> <span class="muted">'+safe(c.username)+'</span></div><span class="muted">'+new Date(p.date).toLocaleString('ru-RU')+'</span></div>'+
+    (p.text?'<div style="margin-top:9px;white-space:pre-wrap">'+safe(p.text)+'</div>':'')+media+poll+'</article>';
+}
+function votePoll(ci,pid,oi){
+  let p=(channels[ci].posts||[]).find(x=>x.id===pid); if(!p)return;
+  p.votes=p.votes||[]; p.votes[oi]=(p.votes[oi]||0)+1;
+  localStorage.setItem('editclipsChannels',JSON.stringify(channels)); renderChannels();
+}
+function openPost(i){
+  if(!isAdmin(channels[i])) return alert('Только администратор канала может публиковать.');
+  document.getElementById('postModal').dataset.channel=i;
+  document.getElementById('postModalTitle').textContent='Публикация в '+channels[i].name;
+  document.getElementById('postModal').classList.add('show');
+}
+document.getElementById('postType').onchange=e=>{
+  let poll=e.target.value==='poll';
+  document.getElementById('pollFields').style.display=poll?'block':'none';
+  document.getElementById('postMedia').style.display=e.target.value==='clip'?'block':'none';
+};
+async function saveChannelMedia(channel,id,file){
+  try{const db=await openMediaDB();const tx=db.transaction('media','readwrite');tx.objectStore('media').put({id:'channel-'+channel+'-'+id,type:'channel',channel,idPost:id,name:file.name,blob:file});}catch(e){console.warn(e)}
+}
+var __e=document.getElementById('doPost');if(__e)__e.onclick=()=>{
+  let modal=document.getElementById('postModal'), i=+modal.dataset.channel, c=channels[i], type=document.getElementById('postType').value;
+  if(!isAdmin(c))return;
+  let p={id:Date.now(),type,date:Date.now(),text:document.getElementById('postText').value.trim()};
+  if(type==='poll'){
+    p.question=document.getElementById('pollQuestion').value.trim();
+    p.options=document.getElementById('pollOptions').value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,8);
+    p.votes=p.options.map(()=>0);
+    if(!p.question||p.options.length<2)return alert('Для опроса нужен вопрос и минимум 2 варианта.');
+  }
+  let f=document.getElementById('postMedia').files[0];
+  if(type==='clip' && f){
+    if(!f.type.startsWith('video/'))return alert('Выбери видеофайл.');
+    p.media=URL.createObjectURL(f);p.mediaName=f.name;
+    saveChannelMedia(c.username,p.id,f);
+  }
+  if(!p.text && type==='text')return alert('Напиши текст публикации.');
+  c.posts=c.posts||[];c.posts.unshift(p);
+  localStorage.setItem('editclipsChannels',JSON.stringify(channels));
+  modal.classList.remove('show'); document.getElementById('postText').value='';document.getElementById('pollQuestion').value='';document.getElementById('pollOptions').value='';document.getElementById('postMedia').value='';
+  renderChannels();
+};
+var __e=document.getElementById('findUser');if(__e)__e.onclick=renderUsers;
+document.getElementById('userSearch').oninput=renderUsers;
+var __e=document.getElementById('createChannel');if(__e)__e.onclick=()=>document.getElementById('channelModal').classList.add('show');
+var __e=document.getElementById('doChannel');if(__e)__e.onclick=()=>{
+  if(!currentUser)return alert('Сначала войди в аккаунт.');
+  let n=document.getElementById('channelName').value.trim(),u=document.getElementById('channelUsername').value.trim(),d=document.getElementById('channelDesc').value.trim();
+  if(!n||!u)return alert('Заполни название и юзернейм');
+  u=u.startsWith('@')?u:'@'+u;
+  if(channels.some(c=>c.username.toLowerCase()===u.toLowerCase()))return alert('Такой юзернейм канала уже занят.');
+  channels.unshift({name:n,username:u,desc:d,owner:currentUser.username,subscribers:0,posts:[]});
+  localStorage.setItem('editclipsChannels',JSON.stringify(channels));
+  document.getElementById('channelModal').classList.remove('show');renderChannels();
+};
+var __e=document.getElementById('loginBtn');if(__e)__e.onclick=()=>document.getElementById('loginModal').classList.add('show');
+var __e=document.getElementById('doLogin');if(__e)__e.onclick=()=>{
+  let n=document.getElementById('loginName').value.trim(),u=document.getElementById('loginUsername').value.trim(),e=document.getElementById('loginEmail').value.trim();
+  if(!n||!u||!e)return alert('Заполни все поля');
+  u=u.startsWith('@')?u:'@'+u;
+  if(users.some(x=>x.username.toLowerCase()===u.toLowerCase()) && (!currentUser||currentUser.username.toLowerCase()!==u.toLowerCase()))return alert('Такой юзернейм уже занят.');
+  currentUser={name:n,username:u,email:e};localStorage.setItem('editclipsUser',JSON.stringify(currentUser));
+  if(!users.some(x=>x.username.toLowerCase()===u.toLowerCase()))users.push({name:n,username:u});
+  document.getElementById('loginModal').classList.remove('show');document.getElementById('loginBtn').textContent=currentUser.username;
+  renderUsers();renderChannels();renderProfilePage();
+};
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('.modal').classList.remove('show'));
+const oldSupportSend=document.getElementById('supportSend');
+if(oldSupportSend)oldSupportSend.onclick=()=>{
+  const input=document.getElementById('supportInput'); const box=document.getElementById('supportMessages');
+  if(!input||!box)return;
+  let v=input.value.trim();if(!v)return;
+  box.innerHTML+='<div class="msg me">'+safe(v)+'</div><div class="msg">'+
+  (v.toLowerCase().includes('аккаунт')?'Аккаунт сохраняется локально в этой тестовой версии.':
+   v.toLowerCase().includes('канал')?'Открой «Каналы», создай канал и публикуй посты, клипы или опросы.':
+   'Попробуй спросить про аккаунт, чаты, каналы или клипы.')+'</div>';
+  input.value='';
+};
+document.getElementById('postType').dispatchEvent(new Event('change'));
+
+/* Видео */
+let videos=[];
+function renderVideo(){
+  let feed=document.getElementById('videoFeed');if(!feed)return;
+  if(!videos.length){feed.innerHTML='<div class="empty">Пока нет роликов.<br>Загрузи видео — оно останется после перезагрузки.</div>';return}
+  feed.innerHTML=videos.map((v,i)=>'<article class="video-card"><video controls loop playsinline preload="metadata" data-lazy-id="'+safe(String(v.id))+'"></video><div class="video-overlay"><div class="video-title">'+safe(v.name)+'</div><div class="video-meta">'+safe(v.author||'@guest')+(v.description?' · '+safe(v.description):'')+'</div></div><div class="video-actions"><button onclick="toggleVideoLike('+i+')">❤<small style="display:block;font-size:9px">'+(v.likes||0)+'</small></button><button onclick="shareVideo('+i+')">↗</button></div></article>').join('');
+  hydrateAllVideos();
+}
+function toggleVideoLike(i){videos[i].likes=(videos[i].likes||0)+1;persistAll();saveVideoMeta(videos[i]);renderVideo()}
+async function saveVideoMeta(v){
+  try{
+    const db=await openMediaDB();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction('media','readwrite');const store=tx.objectStore('media');
+      const req=store.get(v.id);
+      req.onsuccess=()=>{const old=req.result;if(!old)return;store.put({...old,author:v.author||old.author||'@guest',likes:v.likes||0})};
+      req.onerror=()=>reject(req.error);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+    });
+  }catch(e){console.warn('Media meta error',e)}
+}
+function shareVideo(i){let v=videos[i];if(navigator.share)navigator.share({title:v.name,text:'Смотри ролик в EDITCLIPS'});else navigator.clipboard?.writeText(location.href).then(()=>alert('Ссылка скопирована'))}
+function addVideoFromFile(f){
+  if(!f?.type.startsWith('video/'))return;
+  openUploadEditor([f],'video');
+}
+/* Загрузка теперь сразу сохраняет файл в IndexedDB для клипов и Видео */
+
+/* ===== UPLOAD EDITOR ===== */
+let uploadQueue=[],uploadDefaultType='clip',uploadEditorObjectUrl=null;
+function openUploadEditor(files,defaultType='clip'){
+  uploadQueue=[...files].filter(f=>f?.type?.startsWith('video/'));
+  uploadDefaultType=defaultType;
+  if(!uploadQueue.length)return;
+  showNextUploadEditor();
+}
+function showNextUploadEditor(){
+  const f=uploadQueue[0];if(!f)return;
+  const m=document.getElementById('uploadEditorModal');
+  const pv=document.getElementById('uploadEditorPreview');
+  if(uploadEditorObjectUrl)URL.revokeObjectURL(uploadEditorObjectUrl);
+  uploadEditorObjectUrl=URL.createObjectURL(f);
+  pv.src=uploadEditorObjectUrl;pv.load();
+  document.getElementById('uploadEditorTitle').textContent=(uploadDefaultType==='video'?'🎥 Оформление видео':'🎬 Оформление клипа');
+  document.getElementById('uploadName').value=f.name.replace(/\.[^.]+$/,'');
+  document.getElementById('uploadDescription').value='';
+  document.getElementById('uploadTags').value='';
+  document.getElementById('uploadCategory').value='4k';
+  document.getElementById('uploadType').value=uploadDefaultType;
+  document.getElementById('uploadAuthor').value=currentUser?.username||'@guest';
+  document.getElementById('uploadPublic').checked=true;
+  document.getElementById('uploadFileInfo').textContent='Файл: '+f.name+' • '+(f.size/1024/1024).toFixed(1)+' MB';
+  document.getElementById('uploadProgress').style.display='none';
+  document.querySelector('#uploadProgress i').style.width='0';
+  m.classList.add('show');
+}
+function closeUploadEditor(){
+  document.getElementById('uploadEditorModal')?.classList.remove('show');
+  if(uploadEditorObjectUrl){URL.revokeObjectURL(uploadEditorObjectUrl);uploadEditorObjectUrl=null}
+}
+document.getElementById('uploadCancel')?.addEventListener('click',()=>{
+  uploadQueue=[];closeUploadEditor();
+});
+document.getElementById('uploadType')?.addEventListener('change',e=>{
+  document.getElementById('uploadEditorTitle').textContent=e.target.value==='video'?'🎥 Оформление видео':'🎬 Оформление клипа';
+});
+document.getElementById('uploadSave')?.addEventListener('click',async()=>{
+  const f=uploadQueue[0];if(!f)return;
+  const name=document.getElementById('uploadName').value.trim();
+  if(!name){alert('Напиши название.');return;}
+  const type=document.getElementById('uploadType').value;
+  const tags=document.getElementById('uploadTags').value.split(/[\s,]+/).map(x=>x.trim()).filter(Boolean).slice(0,20);
+  const item={
+    id:(type==='video'?'v-':'c-')+Date.now()+'-'+Math.random().toString(36).slice(2),
+    name,size:f.size,date:Date.now(),category:document.getElementById('uploadCategory').value,
+    type,author:document.getElementById('uploadAuthor').value.trim()||currentUser?.username||'@guest',
+    likes:0,description:document.getElementById('uploadDescription').value.trim(),tags,
+    public:document.getElementById('uploadPublic').checked
+  };
+  const btn=document.getElementById('uploadSave'), prog=document.getElementById('uploadProgress'), bar=prog.querySelector('i');
+  btn.disabled=true;btn.textContent='⏳ Сохраняю...';prog.style.display='block';bar.style.width='35%';
+  const ok=await saveMediaToDB(item,f,type);
+  bar.style.width=ok?'100%':'0%';btn.disabled=false;btn.textContent='💾 Загрузить';
+  if(!ok)return;
+  uploadQueue.shift();
+  await loadMedia();
+  render();renderVideo();renderProfilePage?.();
+  if(uploadQueue.length){setTimeout(showNextUploadEditor,180)}else closeUploadEditor();
+});
+
+/* Меню */
+const sideMenu=document.getElementById('sideMenu');
+var __e=document.getElementById('menuBtn');if(__e)__e.onclick=()=>sideMenu.classList.add('open');
+var __e=document.getElementById('closeMenu');if(__e)__e.onclick=()=>sideMenu.classList.remove('open');
+var __e=document.getElementById('menuProfile');if(__e)__e.onclick=()=>{
+  sideMenu.classList.remove('open');
+  if(!currentUser)return alert('Сначала войди в аккаунт.');
+  updateProfileUI();document.getElementById('profileModal').classList.add('show');
+};
+var __e=document.getElementById('menuSettings');if(__e)__e.onclick=()=>{
+  sideMenu.classList.remove('open');loadSettings();document.getElementById('settingsModal').classList.add('show');
+};
+var __e=document.getElementById('menuLanguage');if(__e)__e.onclick=()=>{
+  sideMenu.classList.remove('open');loadSettings();document.getElementById('settingsModal').classList.add('show');document.getElementById('languageSelect').focus();
+};
+
+/* AI support: works offline with a helpful local assistant; when a real AI API/backend
+   is connected later, this function is the single place to replace with fetch(). */
+function aiMakeShake(){
+  const app=document.getElementById('aiApp').value, song=document.getElementById('aiSong').value.trim()||'твоя песня';
+  const style=document.getElementById('aiShake').value,power=document.getElementById('aiPower').value;
+  const sets={
+    CapCut:{smooth:'Интенсивность 18 · Частота 9 · Поворот 1.5° · Масштаб 2%',hard:'Интенсивность 32 · Частота 14 · Поворот 3° · Масштаб 4%',velocity:'Интенсивность 25 · Частота 18 · Поворот 2° · Масштаб 3%',glitch:'Интенсивность 38 · Частота 20 · Поворот 4° · Масштаб 5%'},
+    'Alight Motion':{smooth:'Position ±18px · Rotation ±1.5° · Scale 101–103% · Ease Out',hard:'Position ±35px · Rotation ±3° · Scale 103–106% · Ease Out',velocity:'Position ±25px · Rotation ±2° · Scale 102–105% · Cubic',glitch:'Position ±42px · Rotation ±4° · Scale 104–108% · Steps'},
+    'After Effects':{smooth:'Position ±12px · Rotation ±1° · Scale 101% · Easy Ease',hard:'Position ±28px · Rotation ±2.5° · Scale 103% · Easy Ease',velocity:'Position ±20px · Rotation ±2° · Scale 102% · Graph Editor',glitch:'Position ±35px · Rotation ±3.5° · Scale 105% · Posterize Time'}};
+  let line=sets[app][style]; if(power==='light')line+=' · Снизь значения примерно на 40%'; if(power==='insane')line+=' · Увеличь значения примерно на 35%';
+  document.getElementById('aiPresetResult').innerHTML='<b>🔥 Shake для «'+safe(song)+'»</b><br><b>'+safe(app)+'</b> · '+safe(style)+' · '+safe(power)+'<br>'+safe(line)+'<br><br><b>Совет:</b> ставь ключевые кадры на сильные удары бита и делай короткий shake 2–5 кадров.';
+}
+function aiMakeQuality(){
+ const app=document.getElementById('aiApp').value;
+ document.getElementById('aiPresetResult').innerHTML='<b>✨ Качество для '+safe(app)+'</b><br>Проект: 1080×1920 или 2160×3840 · FPS: 60 · Битрейт: высокий · Резкость умеренная · Не растягивай видео повторно.<br><br><b>Экспорт:</b> H.264, MP4, высокий битрейт, без лишнего перекодирования.';
+}
+function aiMakeBeat(){
+ const song=document.getElementById('aiSong').value.trim()||'твоя песня';
+ document.getElementById('aiPresetResult').innerHTML='<b>🎵 Shake под бит: «'+safe(song)+'»</b><br>Сделай 3 точки на удар: до бита — Scale 100%, на удар — 103–106%, сразу после — 101%. Добавь короткий Rotation ±1–3° и Position ±10–30px в зависимости от силы.';
+}
+function aiAskPreset(topic){
+ const app=document.getElementById('aiApp').value;
+ document.getElementById('aiPresetResult').innerHTML='<b>🎨 '+safe(topic)+' для '+safe(app)+'</b><br>Начни с контраста +8–15, насыщенности +4–10, Highlights −10, Shadows +5 и умеренной резкости. Потом подстрой под исходник, чтобы не появились ореолы и шум.';
+}
+function aiAnswer(q){
+  const x=q.toLowerCase();
+  if(x.includes('шейк')||x.includes('shake')){ const song=q.replace(/.*?(под|на)\s+/i,'').trim()||document.getElementById('aiSong').value||'твою песню'; document.getElementById('aiSong').value=song; aiMakeShake(); return 'Готово — я собрал базовый Shake под указанную песню. Открой блок настроек выше, чтобы увидеть параметры.'; }
+  if(x.includes('capcut'))return 'Для CapCut могу расписать Shake, Velocity, Blur, Motion Blur, Flash, Glow и цветокор по шагам с русскими названиями элементов.';
+  if(x.includes('alight')||x.includes('alight motion'))return 'Для Alight Motion могу дать значения Position, Rotation, Scale, графики и keyframes покадрово.';
+  if(x.includes('after effects')||x.includes('ae'))return 'Для After Effects могу расписать настройки Transform, Graph Editor, Motion Blur, Echo, Turbulent Displace и другие эффекты.';
+  if(x.includes('привет')||x.includes('hello'))return 'Привет! 🤖 Напиши название песни и программу — я подберу Shake и настройки монтажа.';
+  if(x.includes('клип')||x.includes('видео'))return 'Могу помочь с загрузкой, оформлением клипа, названием, тегами и монтажными настройками.';
+  return 'Я помогу с CapCut, Alight Motion и After Effects. Например: «сделай имбовый Shake под Faster n Harder в CapCut» или «настрой Velocity под эту песню».';
+}
+var __e=document.getElementById('aiSend');if(__e)__e.onclick=()=>{
+  let input=document.getElementById('aiInput'),q=input.value.trim();if(!q)return;
+  let box=document.getElementById('aiMessages');
+  box.innerHTML+='<div class="msg me">'+safe(q)+'</div>';
+  setTimeout(()=>{box.innerHTML+='<div class="msg">'+safe(aiAnswer(q))+'</div>';box.scrollTop=box.scrollHeight},250);
+  input.value='';
+};
+/* Профиль и аватар */
+function updateProfileUI(){
+  let u=currentUser||{name:'Гость',username:'@guest'};
+  document.getElementById('profileName').textContent=u.name||'Гость';
+  document.getElementById('profileUsername').textContent=u.username||'@guest';
+  let av=u.avatar;
+  document.getElementById('profileAvatar').style.display=av?'block':'none';
+  document.getElementById('profileAvatarFallback').style.display=av?'none':'grid';
+  if(av)document.getElementById('profileAvatar').src=av;
+}
+document.getElementById('avatarFile').onchange=e=>{
+  const f=e.target.files[0];if(!f)return; const r=new FileReader();
+  r.onload=()=>{const img=new Image();img.onload=()=>{try{const c=document.createElement('canvas'),m=512,sc=Math.min(1,m/Math.max(img.width,img.height));c.width=Math.max(1,Math.round(img.width*sc));c.height=Math.max(1,Math.round(img.height*sc));c.getContext('2d').drawImage(img,0,0,c.width,c.height);currentUser=currentUser||{name:'Гость',username:'@guest'};currentUser.avatar=c.toDataURL('image/jpeg',.82);localStorage.setItem('editclipsUser',JSON.stringify(currentUser));updateProfileUI();renderProfilePage()}catch(err){alert('Не удалось сохранить аватар: в браузере мало места.')}};img.src=r.result};r.readAsDataURL(f);
+};
+
+function renderProfilePage(){
+  let box=document.getElementById('profilePage');if(!box)return;
+  if(!currentUser){box.innerHTML='<div class="empty">Войди в аккаунт, чтобы открыть профиль.</div>';return}
+  let av=currentUser.avatar?'<img class="profile-big-avatar" src="'+currentUser.avatar+'">':'<div class="profile-big-avatar">'+safe((currentUser.name||'U')[0])+'</div>';
+  let myClips=clips.filter(c=>c.author===currentUser.username).length;
+  box.innerHTML='<div class="profile-cover"><div class="profile-main">'+av+'<div><h2 style="margin:0">'+safe(currentUser.name||'User')+'</h2><div class="muted">'+safe(currentUser.username)+'</div><div class="profile-stats"><div><b>'+following.length+'</b><span class="muted">Подписки</span></div><div><b>'+myClips+'</b><span class="muted">Клипы</span></div></div></div></div><div class="profile-tabs"><button id="editProfileBtn" onclick="editProfile()">✏️ Изменить профиль</button><button onclick="openProfileSettings()">⚙️ Настройки</button></div></div>';
+}
+function openProfileSettings(){loadSettings();document.getElementById('settingsModal').classList.add('show')}
+/* Настройки и перевод интерфейса */
+const translations={
+ru:{
+"Clips":"Клипы","Videos":"Видео","Users":"Пользователи","Chats":"Чаты","Channels":"Каналы","Support":"Поддержка",
+"Log in":"Войти","Upload clip":"Загрузить клип","Upload your clips":"Загрузить свои клипы","Newest":"Новые","By name":"По названию",
+"Search clips...":"Поиск клипов...","Find people by unique username.":"Ищи людей по уникальному юзернейму.",
+"Subscribe to channels and follow their posts.":"Подписывайся на каналы и следи за публикациями.","Create channel":"Создать канал",
+"Subscribe":"Подписаться","Subscribed":"Вы подписаны","Open":"Открыть","Post":"Публикация","Profile":"Профиль","Settings":"Настройки",
+"Language":"Язык","Menu":"Меню","Change avatar":"Сменить аватар","Theme":"Тема","Dark":"Тёмная","Light":"Светлая","Purple":"Фиолетовая",
+"Text size":"Размер текста","Normal":"Обычный","Large":"Крупный","Save":"Сохранить","Close":"Закрыть","No posts yet.":"Публикаций пока нет.",
+"No channels yet.":"Каналов пока нет.","No videos yet.":"Пока нет роликов.","Channel feed":"Лента каналов",
+"for edits":"для эдитов","Find great footage, watch it right on the site, and add your own clips.":"Находи крутые кадры, смотри их прямо на сайте и добавляй собственные клипы.",
+"Vertical video feed":"Вертикальная лента роликов в стиле TikTok.","Search users by username":"Поиск пользователей по юзернейму",
+"Write a message...":"Сообщение...","Ask a question...":"Напиши вопрос...","What do you want to publish?":"Что хочешь опубликовать?",
+"Question":"Вопрос","Options separated by commas":"Варианты через запятую","Name":"Имя","Title":"Название","Description":"Описание",
+"New publication":"Новая публикация","Text post":"Пост","Clip / Edit":"Клип / Edit","Poll":"Опрос","Publish":"Опубликовать",
+"Cancel":"Отмена","Download":"Скачать","Delete":"Удалить","Write":"Написать","Create":"Создать",
+"Only the channel administrator can publish.":"Только администратор канала может публиковать.",
+"A poll needs a question and at least 2 options.":"Для опроса нужен вопрос и минимум 2 варианта.",
+"Choose a video file.":"Выбери видеофайл.","Write something to publish.":"Напиши текст публикации.",
+"First log in to your account.":"Сначала войди в аккаунт.","Fill in the channel name and username.":"Заполни название и юзернейм",
+"That channel username is already taken.":"Такой юзернейм канала уже занят.","Fill in all fields.":"Заполни все поля",
+"That username is already taken.":"Такой юзернейм уже занят.","Copy link":"Скопировать ссылку","Link copied":"Ссылка скопирована"
+},
+en:{
+"Клипы":"Clips","Видео":"Videos","Пользователи":"Users","Чаты":"Chats","Каналы":"Channels","Поддержка":"Support",
+"Войти":"Log in","Загрузить клип":"Upload clip","Загрузить свои клипы":"Upload your clips","Новые":"Newest","По названию":"By name",
+"Поиск клипов...":"Search clips...","Ищи людей по уникальному юзернейму.":"Find people by unique username.",
+"Подписывайся на каналы и следи за публикациями.":"Subscribe to channels and follow their posts.","Создать канал":"Create channel",
+"Подписаться":"Subscribe","Вы подписаны":"Subscribed","Открыть":"Open","Публикация":"Post","Профиль":"Profile","Настройки":"Settings",
+"Язык":"Language","Меню":"Menu","Сменить аватар":"Change avatar","Тема":"Theme","Тёмная":"Dark","Светлая":"Light","Фиолетовая":"Purple",
+"Размер текста":"Text size","Обычный":"Normal","Крупный":"Large","Сохранить":"Save","Закрыть":"Close",
+"Публикаций пока нет.":"No posts yet.","Каналов пока нет.":"No channels yet.","Пока нет роликов.":"No videos yet.","Лента каналов":"Channel feed",
+"для эдитов":"for edits","Находи крутые кадры, смотри их прямо на сайте и добавляй собственные клипы.":"Find great footage, watch it right on the site, and add your own clips.",
+"Вертикальная лента роликов в стиле TikTok.":"Vertical TikTok-style video feed.","Сообщение...":"Write a message...","Напиши вопрос...":"Ask a question...",
+"Что хочешь опубликовать?":"What do you want to publish?","Вопрос":"Question","Варианты через запятую":"Options separated by commas",
+"Имя":"Name","Название":"Title","Описание":"Description","Новая публикация":"New publication","Пост":"Text post","Клип / Edit":"Clip / Edit","Опрос":"Poll",
+"Опубликовать":"Publish","Отмена":"Cancel","Скачать":"Download","Удалить":"Delete","Написать":"Write","Создать":"Create",
+"Только администратор канала может публиковать.":"Only the channel administrator can publish.",
+"Для опроса нужен вопрос и минимум 2 варианта.":"A poll needs a question and at least 2 options.",
+"Выбери видеофайл.":"Choose a video file.","Напиши текст публикации.":"Write something to publish.",
+"Сначала войди в аккаунт.":"First log in to your account.","Заполни название и юзернейм":"Fill in the channel name and username",
+"Такой юзернейм канала уже занят.":"That channel username is already taken.","Заполни все поля":"Fill in all fields",
+"Такой юзернейм уже занят.":"That username is already taken.","Ссылка скопирована":"Link copied"
+},
+es:{
+"Клипы":"Clips","Видео":"Vídeos","Пользователи":"Usuarios","Чаты":"Chats","Каналы":"Canales","Поддержка":"Soporte","Войти":"Iniciar sesión",
+"Загрузить клип":"Subir clip","Загрузить свои клипы":"Sube tus clips","Новые":"Nuevos","По названию":"Por nombre","Поиск клипов...":"Buscar clips...",
+"Ищи людей по уникальному юзернейму.":"Busca personas por nombre de usuario.","Подписывайся на каналы и следи за публикациями.":"Suscríbete a canales y sigue sus publicaciones.",
+"Создать канал":"Crear canal","Подписаться":"Suscribirse","Вы подписаны":"Suscrito","Открыть":"Abrir","Публикация":"Publicación","Профиль":"Perfil","Настройки":"Configuración","Язык":"Idioma","Меню":"Menú",
+"Сменить аватар":"Cambiar avatar","Тема":"Tema","Тёмная":"Oscuro","Светлая":"Claro","Фиолетовая":"Morado","Размер текста":"Tamaño del texto","Обычный":"Normal","Крупный":"Grande","Сохранить":"Guardar","Закрыть":"Cerrar",
+"Публикаций пока нет.":"No hay publicaciones.","Каналов пока нет.":"No hay canales.","Пока нет роликов.":"No hay vídeos.","Лента каналов":"Feed de canales"
+},
+de:{
+"Клипы":"Clips","Видео":"Videos","Пользователи":"Benutzer","Чаты":"Chats","Каналы":"Kanäle","Поддержка":"Support","Войти":"Anmelden",
+"Загрузить клип":"Clip hochladen","Загрузить свои клипы":"Clips hochladen","Новые":"Neu","По названию":"Nach Name","Поиск клипов...":"Clips suchen...",
+"Ищи людей по уникальному юзернейму.":"Finde Personen über ihren Benutzernamen.","Подписывайся на каналы и следи за публикациями.":"Abonniere Kanäle und folge ihren Beiträgen.",
+"Создать канал":"Kanal erstellen","Подписаться":"Abonnieren","Вы подписаны":"Abonniert","Открыть":"Öffnen","Публикация":"Beitrag","Профиль":"Profil","Настройки":"Einstellungen","Язык":"Sprache","Меню":"Menü",
+"Сменить аватар":"Avatar ändern","Тема":"Design","Тёмная":"Dunkel","Светлая":"Hell","Фиолетовая":"Lila","Размер текста":"Textgröße","Обычный":"Normal","Крупный":"Groß","Сохранить":"Speichern","Закрыть":"Schließen",
+"Публикаций пока нет.":"Noch keine Beiträge.","Каналов пока нет.":"Noch keine Kanäle.","Пока нет роликов.":"Noch keine Videos.","Лента каналов":"Kanäle-Feed"
+},
+fr:{
+"Клипы":"Clips","Видео":"Vidéos","Пользователи":"Utilisateurs","Чаты":"Discussions","Каналы":"Chaînes","Поддержка":"Assistance","Войти":"Connexion",
+"Загрузить клип":"Importer un clip","Загрузить свои клипы":"Importer vos clips","Новые":"Récents","По названию":"Par nom","Поиск клипов...":"Rechercher des clips...",
+"Ищи людей по уникальному юзернейму.":"Rechercher des personnes par nom d’utilisateur.","Подписывайся на каналы и следи за публикациями.":"Abonnez-vous aux chaînes et suivez leurs publications.",
+"Создать канал":"Créer une chaîne","Подписаться":"S’abonner","Вы подписаны":"Abonné","Открыть":"Ouvrir","Публикация":"Publication","Профиль":"Profil","Настройки":"Paramètres","Язык":"Langue","Меню":"Menu",
+"Сменить аватар":"Changer l’avatar","Тема":"Thème","Тёмная":"Sombre","Светлая":"Clair","Фиолетовая":"Violet","Размер текста":"Taille du texte","Обычный":"Normal","Крупный":"Grand","Сохранить":"Enregistrer","Закрыть":"Fermer",
+"Публикаций пока нет.":"Aucune publication.","Каналов пока нет.":"Aucune chaîne.","Пока нет роликов.":"Aucune vidéo.","Лента каналов":"Fil des chaînes"
+},
+uk:{
+"Клипы":"Кліпи","Видео":"Відео","Пользователи":"Користувачі","Чаты":"Чати","Каналы":"Канали","Поддержка":"Підтримка","Войти":"Увійти",
+"Загрузить клип":"Завантажити кліп","Загрузить свои клипы":"Завантажити свої кліпи","Новые":"Нові","По названию":"За назвою","Поиск клипов...":"Пошук кліпів...",
+"Ищи людей по уникальному юзернейму.":"Шукай людей за унікальним юзернеймом.","Подписывайся на каналы и следи за публикациями.":"Підписуйся на канали та стеж за публікаціями.",
+"Создать канал":"Створити канал","Подписаться":"Підписатися","Вы подписаны":"Ви підписані","Открыть":"Відкрити","Публикация":"Публікація","Профиль":"Профіль","Настройки":"Налаштування","Язык":"Мова","Меню":"Меню",
+"Сменить аватар":"Змінити аватар","Тема":"Тема","Тёмная":"Темна","Светлая":"Світла","Фиолетовая":"Фіолетова","Размер текста":"Розмір тексту","Обычный":"Звичайний","Крупный":"Великий","Сохранить":"Зберегти","Закрыть":"Закрити",
+"Публикаций пока нет.":"Публікацій поки немає.","Каналов пока нет.":"Каналів поки немає.","Пока нет роликов.":"Відео поки немає.","Лента каналов":"Стрічка каналів"
+},
+it:{
+"Клипы":"Clip","Видео":"Video","Пользователи":"Utenti","Чаты":"Chat","Каналы":"Canali","Поддержка":"Support","Войти":"Accedi","Загрузить клип":"Carica clip",
+"Новые":"Nuovi","По названию":"Per nome","Поиск клипов...":"Cerca clip...","Создать канал":"Crea canale","Подписаться":"Iscriviti","Вы подписаны":"Iscritto","Открыть":"Apri",
+"Профиль":"Profilo","Настройки":"Impostazioni","Язык":"Lingua","Меню":"Menu","Сменить аватар":"Cambia avatar","Тема":"Tema","Тёмная":"Scuro","Светлая":"Chiaro","Фиолетовая":"Viola","Размер текста":"Dimensione testo","Обычный":"Normale","Крупный":"Grande","Сохранить":"Salva","Закрыть":"Chiudi"
+},
+pt:{
+"Клипы":"Clipes","Видео":"Vídeos","Пользователи":"Utilizadores","Чаты":"Chats","Каналы":"Canais","Поддержка":"Suporte","Войти":"Entrar","Загрузить клип":"Enviar clipe",
+"Новые":"Novos","По названию":"Por nome","Поиск клипов...":"Pesquisar clipes...","Создать канал":"Criar canal","Подписаться":"Subscrever","Вы подписаны":"Subscrito","Открыть":"Abrir",
+"Профиль":"Perfil","Настройки":"Definições","Язык":"Idioma","Меню":"Menu","Сменить аватар":"Alterar avatar","Тема":"Tema","Тёмная":"Escuro","Светлая":"Claro","Фиолетовая":"Roxo","Размер текста":"Tamanho do texto","Обычный":"Normal","Крупный":"Grande","Сохранить":"Guardar","Закрыть":"Fechar"
+},
+nl:{
+"Клипы":"Clips","Видео":"Video's","Пользователи":"Gebruikers","Чаты":"Chats","Каналы":"Kanalen","Поддержка":"Support","Войти":"Inloggen","Загрузить клип":"Clip uploaden",
+"Новые":"Nieuw","По названию":"Op naam","Поиск клипов...":"Clips zoeken...","Создать канал":"Kanaal maken","Подписаться":"Abonneren","Вы подписаны":"Geabonneerd","Открыть":"Openen",
+"Профиль":"Profiel","Настройки":"Instellingen","Язык":"Taal","Меню":"Menu","Сменить аватар":"Avatar wijzigen","Тема":"Thema","Тёмная":"Donker","Светлая":"Licht","Фиолетовая":"Paars","Размер текста":"Tekstgrootte","Обычный":"Normaal","Крупный":"Groot","Сохранить":"Opslaan","Закрыть":"Sluiten"
+}
+};
+const languages=[
+['Русский','ru'],['English','en'],['Español','es'],['Deutsch','de'],['Français','fr'],['Italiano','it'],['Português','pt'],
+['Türkçe','tr'],['العربية','ar'],['中文','zh'],['日本語','ja'],['한국어','ko'],['हिन्दी','hi'],['বাংলা','bn'],['Українська','uk'],
+['Polski','pl'],['Nederlands','nl'],['Čeština','cs'],['Svenska','sv'],['Norsk','no'],['Dansk','da'],['Suomi','fi'],['Ελληνικά','el'],
+['עברית','he'],['ไทย','th'],['Tiếng Việt','vi'],['Bahasa Indonesia','id'],['Malay','ms'],['Filipino','fil'],['فارسی','fa'],
+['Română','ro'],['Magyar','hu'],['Български','bg'],['Slovenčina','sk'],['Српски','sr'],['Hrvatski','hr'],['Slovenščina','sl'],
+['ქართული','ka'],['Հայերեն','hy'],['Azərbaycan dili','az'],['Қазақша','kk'],['O‘zbekcha','uz'],['Eesti','et'],
+['Latviešu','lv'],['Lietuvių','lt'],['Català','ca'],['Bosanski','bs'],['Македонски','mk'],['Shqip','sq'],['Kiswahili','sw'],
+['Afrikaans','af'],['اردو','ur'],['தமிழ்','ta'],['తెలుగు','te'],['मराठी','mr'],['ગુજરાતી','gu'],['ਪੰਜਾਬੀ','pa']
+];
+const languageSelect=document.getElementById('languageSelect');
+languageSelect.innerHTML=languages.map(x=>'<option value="'+x[1]+'">'+x[0]+'</option>').join('');
+
+function translatePage(lang){
+  const dict=translations[lang]||translations.en;
+  document.documentElement.lang=lang;
+  const all=[...document.querySelectorAll('body *')];
+  all.forEach(el=>{
+    if(el.children.length===0){
+      const raw=el.textContent.trim();
+      if(dict[raw]) el.textContent=dict[raw];
+      else if(dict[raw.replace(/^[^A-Za-zА-Яа-яЁё0-9]+/,'')]){
+        const key=raw.replace(/^[^A-Za-zА-Яа-яЁё0-9]+/,'');
+        el.textContent=raw.slice(0,raw.indexOf(key))+dict[key];
+      }
+    }
+    ['placeholder','title','aria-label'].forEach(attr=>{
+      const val=el.getAttribute(attr);
+      if(val){
+        const clean=val.replace(/^🔎\s*/,'');
+        if(dict[clean]) el.setAttribute(attr,(val.startsWith('🔎')?'🔎 ':'')+dict[clean]);
+      }
+    });
+  });
+  document.querySelectorAll('option').forEach(o=>{
+    const raw=o.textContent.trim();
+    if(dict[raw])o.textContent=dict[raw];
+  });
+}
+function loadSettings(){
+  let s=JSON.parse(localStorage.getItem('editclipsSettings')||'{}');
+  let lang=localStorage.getItem('editclipsLanguage')||s.language||'ru';
+  document.getElementById('themeSelect').value=s.theme||'dark';
+  document.getElementById('fontSelect').value=s.font||'normal';
+  languageSelect.value=languages.some(x=>x[1]===lang)?lang:'ru';
+}
+function applySettings(){
+  let s=JSON.parse(localStorage.getItem('editclipsSettings')||'{}');
+  document.body.style.fontSize=s.font==='large'?'18px':'';
+  if(s.theme==='light'){
+    document.body.style.background='#f4f5f8';document.body.style.color='#171922';
+  }else if(s.theme==='purple'){
+    document.body.style.background='#10091b';document.body.style.color='#f7f2ff';
+  }else{
+    document.body.style.background='#08090d';document.body.style.color='#f5f7fb';
+  }
+}
+var __e=document.getElementById('saveSettings');if(__e)__e.onclick=()=>{
+  let lang=languageSelect.value;
+  let s={theme:document.getElementById('themeSelect').value,font:document.getElementById('fontSelect').value,language:lang};
+  localStorage.setItem('editclipsSettings',JSON.stringify(s));
+  localStorage.setItem('editclipsLanguage',lang);
+  applySettings();
+  document.getElementById('settingsModal').classList.remove('show');
+  location.reload();
+};
+
+/* Автоматический перевод динамически созданных элементов */
+let translationBusy=false;
+const translationObserver=new MutationObserver(()=>{
+  if(translationBusy)return;
+  translationBusy=true;
+  const lang=localStorage.getItem('editclipsLanguage')||'ru';
+  translatePage(lang);
+  translationBusy=false;
+});
+translationObserver.observe(document.getElementById('grid')||document.body,{childList:true,subtree:true});
+['userResults','chatList','messages','channelList','channelFeed','videoFeed','supportMessages'].forEach(id=>{
+  const el=document.getElementById(id); if(el)translationObserver.observe(el,{childList:true,subtree:true});
+});
+/* Переключение языка: сохраняем выбор и перезагружаем интерфейс.
+   Это важно, потому что исходные русские подписи остаются в HTML и
+   каждый новый язык строится заново, поэтому можно переключаться туда-обратно. */
+languageSelect.onchange=()=>{
+  const lang=languageSelect.value;
+  localStorage.setItem('editclipsLanguage',lang);
+  const s=JSON.parse(localStorage.getItem('editclipsSettings')||'{}');
+  s.language=lang;
+  localStorage.setItem('editclipsSettings',JSON.stringify(s));
+  location.reload();
+};
+/* Для языков без отдельного словаря используем английский как резервный вариант. */
+
+function renderNotifications(){
+  let box=document.getElementById('notificationList');if(!box)return;
+  box.innerHTML=notifications.map(n=>'<div class="notification">'+safe(n.text)+'<div class="muted">'+new Date(n.date).toLocaleString()+'</div></div>').join('')||'<div class="empty">Нет уведомлений.</div>';
+}
+var __e=document.getElementById('menuNotifications');if(__e)__e.onclick=()=>{
+  sideMenu.classList.remove('open');renderNotifications();document.getElementById('notificationsModal').classList.add('show');
+};
+var __e=document.getElementById('clearNotifications');if(__e)__e.onclick=()=>{notifications=[];persistAll();renderNotifications()};
+/* Показ страниц */
+const oldShowPage=showPage;
+showPage=function(id){
+  oldShowPage(id);
+  if(id==='video')renderVideo();if(id==='profile')renderProfilePage();
+};
+applySettings();loadMedia().then(()=>{render();renderVideo();renderProfilePage()});loadSettings();translatePage(localStorage.getItem('editclipsLanguage')||'ru');renderNotifications();showPage('home');
+
+/* ===== FINAL STABILITY CONTROLLER ===== */
+(function(){
+  const $=id=>document.getElementById(id);
+
+  // Hamburger + close.
+  const menu=$('sideMenu'), menuBtn=$('menuBtn'), close=$('closeMenu');
+  const openMenu=()=>{menu?.classList.add('open');document.body.classList.add('menu-open');$('mobileNav')?.setAttribute('aria-hidden','true')};
+  const closeMenu=()=>{menu?.classList.remove('open');document.body.classList.remove('menu-open');$('mobileNav')?.removeAttribute('aria-hidden')};
+  if(menuBtn)menuBtn.onclick=e=>{e.preventDefault();e.stopPropagation();openMenu()};
+  if(close)close.onclick=e=>{e.preventDefault();closeMenu()};
+  menu?.addEventListener('click',e=>{if(e.target===menu)closeMenu()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+
+  // Menu items.
+  $('menuProfile')?.addEventListener('click',()=>{
+    closeMenu();showPage('profile');renderProfilePage?.();
+  });
+  $('menuSettings')?.addEventListener('click',()=>{
+    closeMenu();loadSettings?.();$('settingsModal')?.classList.add('show');
+  });
+  $('menuNotifications')?.addEventListener('click',()=>{
+    closeMenu();renderNotifications?.();$('notificationsModal')?.classList.add('show');
+  });
+  $('menuLanguage')?.addEventListener('click',()=>{
+    closeMenu();loadSettings?.();$('settingsModal')?.classList.add('show');$('languageSelect')?.focus();
+  });
+
+  // Navigation.
+  document.querySelectorAll('[data-page]').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();showPage(btn.dataset.page);
+    });
+  });
+
+  // Video uploader button created once.
+  function addVideoButton(){
+    const page=$('video');if(!page)return;
+    if($('realVideoUpload'))return;
+    const row=page.querySelector('.row');
+    const b=document.createElement('button');
+    b.id='realVideoUpload';b.className='upload';b.textContent='＋ Загрузить видео';
+    b.style.marginTop='10px';
+    (row||page).appendChild(b);
+    b.onclick=()=>{
+      let input=$('__realVideoInput');
+      if(!input){
+        input=document.createElement('input');input.type='file';input.accept='video/*';input.multiple=true;
+        input.id='__realVideoInput';input.hidden=true;document.body.appendChild(input);
+        input.onchange=async()=>{
+          const files=[...input.files];input.value='';
+          if(files.length)openUploadEditor(files,'video');
+        };
+      }
+      input.click();
+    };
+  }
+  addVideoButton();
+
+  // Real profile editor.
+  function editProfile(){
+    if(!window.currentUser){alert('Сначала войди в аккаунт.');return}
+    let m=$('profileEditorReal');
+    if(!m){
+      m=document.createElement('div');m.className='modal';m.id='profileEditorReal';
+      m.innerHTML=`<div class="modal-box"><h2>👤 Изменить профиль</h2>
+      <input id="realProfileName" class="search" placeholder="Имя">
+      <input id="realProfileUsername" class="search" style="margin-top:8px" placeholder="@username">
+      <textarea id="realProfileBio" class="search" style="margin-top:8px" placeholder="Описание"></textarea>
+      <input id="realProfileAvatar" type="file" accept="image/*" style="margin-top:8px">
+      <div class="modal-actions"><button class="ghost" id="realProfileCancel">Отмена</button><button class="upload" id="realProfileSave">Сохранить</button></div></div>`;
+      document.body.appendChild(m);
+      $('realProfileCancel').onclick=()=>m.classList.remove('show');
+      $('realProfileSave').onclick=async()=>{
+        const u=window.currentUser;
+        u.name=$('realProfileName').value.trim()||u.name||'User';
+        let un=$('realProfileUsername').value.trim().replace(/^@/,'');
+        u.username=un?'@'+un:u.username;
+        u.bio=$('realProfileBio').value.trim();
+        const f=$('realProfileAvatar').files?.[0];
+        if(f)u.avatar=await new Promise((ok,no)=>{let r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)});
+        localStorage.setItem('editclipsUser',JSON.stringify(u));window.currentUser=u;currentUser=u;
+        if(typeof users!=='undefined'){
+          const i=users.findIndex(x=>x.id===u.id||x.username===u.username);
+          if(i>=0)users[i]={...users[i],...u}; else users.push({...u});
+          localStorage.setItem('editclipsUsers',JSON.stringify(users));
+        }
+        m.classList.remove('show');renderProfilePage?.();renderUsers?.();
+      };
+    }
+    $('realProfileName').value=currentUser.name||'';
+    $('realProfileUsername').value=(currentUser.username||'').replace(/^@/,'');
+    $('realProfileBio').value=currentUser.bio||'';
+    $('realProfileAvatar').value='';
+    m.classList.add('show');
+  }
+  window.editProfile=editProfile;
+
+  // Make profile edit button guaranteed.
+  function profileEditButton(){
+    const box=$('profilePage');if(!box)return;
+    let b=$('guaranteedEditProfile');
+    if(!b){
+      b=document.createElement('button');b.id='guaranteedEditProfile';b.className='upload';
+      b.textContent='✏️ Изменить профиль';b.onclick=editProfile;
+      box.appendChild(b);
+    }
+  }
+  profileEditButton();
+
+  // AI: remove all ambiguity by using one final handler.
+  const ai=$('aiSend'), inp=$('aiInput');
+  if(ai)ai.onclick=e=>{
+    e.preventDefault();
+    const q=inp?.value.trim();if(!q)return;
+    const box=$('aiMessages');
+    const me=document.createElement('div');me.className='msg me';me.textContent=q;box.appendChild(me);
+    inp.value='';
+    const answer=typeof aiAnswer==='function'?aiAnswer(q):'Расскажи подробнее, и я постараюсь помочь.';
+    setTimeout(()=>{const bot=document.createElement('div');bot.className='msg';bot.textContent=answer;box.appendChild(bot);box.scrollTop=box.scrollHeight},150);
+  };
+  if(inp)inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();ai?.click()}};
+
+  // Settings handler is defined once above.
+
+  // Close every modal reliably.
+  document.addEventListener('click',e=>{
+    const c=e.target.closest('[data-close]');
+    if(c)c.closest('.modal')?.classList.remove('show');
+  });
+
+  // Initial media restore.
+  if(typeof loadMedia==='function')loadMedia().then(()=>{render?.();renderVideo?.()});
+})();
+
+
+window.addEventListener('error',function(e){
+  console.error('EDITCLIPS:',e.error||e.message);
+});
+</script>
+<div class="toast" id="toast"></div>
+
+<section id="ec30Community" class="page" style="display:none">
+ <div class="ec30">
+  <h2>🌐 Сообщество 3.0</h2>
+  <div class="ec30-tabs">
+   <button data-ec30tab="feed">🏠 Лента</button>
+   <button data-ec30tab="popular">🔥 Популярное</button>
+   <button data-ec30tab="search">🔎 Поиск</button>
+   <button data-ec30tab="saved">🔖 Сохранённое</button>
+   <button data-ec30tab="hashtags">#️⃣ Хэштеги</button>
+  </div>
+  <div id="ec30Content" style="margin-top:12px"></div>
+ </div>
+</section>
+
+<script id="editclips30module">
+(function(){
+"use strict";
+const KEY="editclips30Social";
+let S={};
+try{S=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){S={}}
+S.likes=S.likes||{};S.saved=S.saved||[];S.comments=S.comments||{};S.following=S.following||[];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(v){const d=document.createElement("div");d.textContent=String(v??"");return d.innerHTML}
+function videos(){return Array.isArray(window.videos)?window.videos:[]}
+function users(){return Array.isArray(window.users)?window.users:[]}
+function key(id){return "video:"+id}
+function card(v){
+ const k=key(v.id), comments=S.comments[k]||[], author=v.author||"@guest";
+ return '<div class="ec30-card"><b>'+esc(v.name||"Видео")+'</b><div class="muted">'+esc(author)+'</div>'+
+ (v.url||v._lazy?'<video controls playsinline preload="none" data-lazy-id="'+esc(v.id)+'" src="'+esc(v.url||'')+'" style="width:100%;max-height:500px;border-radius:10px;margin-top:10px"></video>':'')+
+ '<div class="ec30-actions"><button data-ec30like="'+esc(v.id)+'">'+(S.likes[k]?"❤️ Лайкнуто":"🤍 Лайк")+'</button>'+
+ '<button data-ec30save="'+esc(v.id)+'">'+(S.saved.includes(k)?"🔖 Сохранено":"🔖 Сохранить")+'</button>'+
+ '<button data-ec30share="'+esc(v.id)+'">↗️ Поделиться</button>'+
+ '<button data-ec30follow="'+esc(author)+'">'+(S.following.includes(author)?"Отписаться":"Подписаться")+'</button>'+
+ '<button data-ec30report="'+esc(v.id)+'">⚠️ Жалоба</button></div>'+
+ '<div class="ec30-comments">'+comments.slice(-5).map(c=>'<p><b>'+esc(c.user)+'</b>: '+esc(c.text)+'</p>').join("")+'</div>'+
+ '<div style="display:flex;gap:7px;margin-top:8px"><input class="ec30-search" id="ec30c_'+esc(v.id)+'" placeholder="Написать комментарий"><button data-ec30comment="'+esc(v.id)+'">Отправить</button></div></div>'
+}
+function render(tab){
+ const box=document.getElementById("ec30Content");if(!box)return;
+ document.querySelectorAll("[data-ec30tab]").forEach(b=>b.classList.toggle("active",b.dataset.ec30tab===tab));
+ if(tab==="search"){
+   box.innerHTML='<input id="ec30Search" class="ec30-search" placeholder="Ищи @username, пользователя, канал или видео">';
+   box.insertAdjacentHTML("beforeend",'<div id="ec30SearchResults"></div>');
+   const inp=document.getElementById("ec30Search");
+   inp.oninput=()=>search(inp.value);
+   return;
+ }
+ if(tab==="hashtags"){
+   box.innerHTML="<h3>#️⃣ Хэштеги</h3><p class=\"muted\">Хэштеги можно добавлять к названиям/описаниям видео.</p>";
+   return;
+ }
+ let list=videos().slice();
+ if(tab==="popular")list.sort((a,b)=>(S.likes[key(b.id)]?1:0)-(S.likes[key(a.id)]?1:0));
+ if(tab==="feed"&&S.following.length){const f=new Set(S.following);const own=list.filter(v=>f.has(v.author));if(own.length)list=own}
+ if(tab==="saved")list=list.filter(v=>S.saved.includes(key(v.id)));
+ box.innerHTML=list.length?list.reverse().map(card).join(""):'<p class="muted">Пока здесь пусто.</p>';
+}
+function search(q){
+ const out=document.getElementById("ec30SearchResults");if(!out)return;
+ q=q.trim().toLowerCase();if(!q){out.innerHTML="";return}
+ const us=users().filter(u=>(String(u.name||"")+" "+String(u.username||"")).toLowerCase().includes(q));
+ const vs=videos().filter(v=>(String(v.name||"")+" "+String(v.author||"")).toLowerCase().includes(q));
+ out.innerHTML='<h3>👤 Пользователи</h3>'+us.map(u=>'<div class="ec30-card"><b>'+esc(u.name||u.username)+'</b> '+esc(u.username||"")+' <button data-ec30follow="'+esc(u.username||"")+'">'+(S.following.includes(u.username)?"Отписаться":"Подписаться")+'</button></div>').join("")+
+ '<h3>🎬 Видео</h3>'+vs.map(card).join("");
+}
+function open(){
+ const oldPages=document.querySelectorAll(".page");oldPages.forEach(p=>p.classList.remove("active"));
+ const p=document.getElementById("ec30Community");if(p){p.style.display="block";p.classList.add("active")}
+ render("feed");
+}
+window.editclips30OpenCommunity=open;
+
+document.addEventListener("click",function(e){
+ let x=e.target.closest("[data-ec30tab]");if(x){render(x.dataset.ec30tab);return}
+ x=e.target.closest("[data-ec30like]");if(x){const k=key(x.dataset.ec30like);S.likes[k]=!S.likes[k];save();render("feed");return}
+ x=e.target.closest("[data-ec30save]");if(x){const k=key(x.dataset.ec30save),i=S.saved.indexOf(k);if(i<0)S.saved.push(k);else S.saved.splice(i,1);save();render("saved");return}
+ x=e.target.closest("[data-ec30comment]");if(x){const input=document.getElementById("ec30c_"+x.dataset.ec30comment);const q=input&&input.value.trim();if(!q)return;const k=key(x.dataset.ec30comment);S.comments[k]=S.comments[k]||[];S.comments[k].push({user:(window.currentUser&&window.currentUser.username)||"@guest",text:q});save();render("feed");return}
+ x=e.target.closest("[data-ec30follow]");if(x){const u=x.dataset.ec30follow;if(!u)return;const i=S.following.indexOf(u);if(i<0)S.following.push(u);else S.following.splice(i,1);save();render("feed");return}
+ x=e.target.closest("[data-ec30share]");if(x){if(navigator.clipboard)navigator.clipboard.writeText(location.href);return}
+ x=e.target.closest("[data-ec30report]");if(x){const r=JSON.parse(localStorage.getItem("editclipsReports")||"[]");r.push({id:x.dataset.ec30report,date:Date.now(),user:(window.currentUser&&window.currentUser.username)||"@guest"});localStorage.setItem("editclipsReports",JSON.stringify(r));alert("Жалоба отправлена.");return}
+});
+})();
+</script>
+
+
+</body>
+</html>
